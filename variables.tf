@@ -1,19 +1,35 @@
+
 variable "environment" {
   description = "Environment name"
   type        = string
 }
 
-variable "vpc_cidr" {
-  description = "VPC CIDR"
+variable "vpc_id" {
+  description = "VPC ID"
   type        = string
 }
 
-variable "public_subnet_1_cidr" {
-  description = "Public subnet 1 CIDR"
+variable "subnet_id" {
+  description = "Subnet ID"
   type        = string
 }
 
-variable "public_subnet_2_cidr" {
-  description = "Public subnet 2 CIDR"
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+}
+
+variable "ami_id" {
+  description = "AMI ID"
+  type        = string
+}
+
+variable "web_security_group_id" {
+  description = "Web security group ID"
+  type        = string
+}
+
+variable "iam_instance_profile" {
+  description = "IAM instance profile name"
   type        = string
 }

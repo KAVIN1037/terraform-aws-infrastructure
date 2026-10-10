@@ -1,71 +1,7 @@
-resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  tags = {
-    Name        = "${var.environment}-vpc"
-    Environment = var.environment
-  }
-}
-
-resource "aws_subnet" "public_1" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_1_cidr
-  availability_zone       = "us-east-1a"
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "${var.environment}-public-subnet-1"
-  }
-}
-
-resource "aws_subnet" "public_2" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_2_cidr
-  availability_zone       = "us-east-1b"
-  map_public_ip_on_launch = true
-
-  tags = {
-    Name = "${var.environment}-public-subnet-2"
-  }
-}
-
-resource "aws_internet_gateway" "main" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.environment}-igw"
-  }
-}
-
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
-  }
-
-  tags = {
-    Name = "${var.environment}-public-route-table"
-  }
-}
-
-resource "aws_route_table_association" "public_1" {
-  subnet_id      = aws_subnet.public_1.id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_route_table_association" "public_2" {
-  subnet_id      = aws_subnet.public_2.id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_security_group" "web" {
-  name        = "${var.environment}-web-sg"
-  description = "Allow HTTP and SSH"
-  vpc_id      = aws_vpc.main.id
+resource "aws_security_group" "compute" {
+  name        = "${var.environment}-compute-sg"
+  description = "Security group for EC2"
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "HTTP"
@@ -91,6 +27,42 @@ resource "aws_security_group" "web" {
   }
 
   tags = {
-    Name = "${var.environment}-web-sg"
+    Name = "${var.environment}-compute-sg"
   }
+}
+
+resource "aws_instance" "web" {
+  ami                         = var.ami_id
+  instance_type               = var.instance_type
+  subnet_id                   = var.subnet_id
+  iam_instance_profile        = var.iam_instance_profile
+  vpc_security_group_ids      = [aws_security_group.compute.id]
+  associate_public_ip_address = true
+
+  user_data = <<-EOF
+              #!/bin/bash
+              apt-get update -y
+              apt-get install -y nginx
+              systemctl enable nginx
+              systemctl start nginx
+              echo "<h1>Terraform AWS Infrastructure</h1><p>Application is running successfully.</p>" > /var/www/html/index.html
+              EOF
+
+  tags = {
+    Name        = "${var.environment}-web-server"
+    Environment = var.environment
+  }
+}
+
+resource "aws_eip" "web" {
+  domain = "vpc"
+
+  tags = {
+    Name = "${var.environment}-elastic-ip"
+  }
+}
+
+resource "aws_eip_association" "web" {
+  instance_id   = aws_instance.web.id
+  allocation_id = aws_eip.web.id
 }

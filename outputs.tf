@@ -1,19 +1,14 @@
-output "vpc_id" {
-  description = "VPC ID"
-  value       = aws_vpc.main.id
+output "instance_id" {
+  description = "EC2 Instance ID"
+  value       = aws_instance.web.id
 }
 
-output "public_subnet_1_id" {
-  description = "Public Subnet 1 ID"
-  value       = aws_subnet.public_1.id
-}
-
-output "public_subnet_2_id" {
-  description = "Public Subnet 2 ID"
-  value       = aws_subnet.public_2.id
+output "elastic_ip" {
+  description = "Elastic IP"
+  value       = aws_eip.web.public_ip
 }
 
 output "security_group_id" {
-  description = "Web Security Group ID"
-  value       = aws_security_group.web.id
+  description = "Compute Security Group ID"
+  value       = aws_security_group.compute.id
 }
