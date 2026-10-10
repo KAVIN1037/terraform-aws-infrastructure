@@ -1,24 +1,19 @@
 output "vpc_id" {
   description = "VPC ID"
-  value       = module.networking.vpc_id
+  value       = aws_vpc.main.id
 }
 
-output "ec2_instance_id" {
-  description = "EC2 Instance ID"
-  value       = module.compute.instance_id
+output "public_subnet_1_id" {
+  description = "Public Subnet 1 ID"
+  value       = aws_subnet.public_1.id
 }
 
-output "elastic_ip" {
-  description = "Elastic IP"
-  value       = module.compute.elastic_ip
+output "public_subnet_2_id" {
+  description = "Public Subnet 2 ID"
+  value       = aws_subnet.public_2.id
 }
 
-output "application_url" {
-  description = "Application URL"
-  value       = "http://${module.compute.elastic_ip}"
-}
-
-output "s3_bucket_name" {
-  description = "S3 Bucket Name"
-  value       = aws_s3_bucket.terraform_bucket.bucket
+output "security_group_id" {
+  description = "Web Security Group ID"
+  value       = aws_security_group.web.id
 }
