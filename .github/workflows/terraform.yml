@@ -88,9 +88,9 @@ jobs:
 
       - name: Infrastructure Validation
         run: |
-          terraform output -raw ec2_instance_id
+          terraform output -raw instance_id
           terraform output -raw elastic_ip
-          terraform output -raw application_url
+          terraform output -raw security_group_id
           env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
