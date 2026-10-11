@@ -89,6 +89,6 @@ jobs:
 
       - name: Infrastructure Validation
         run: |
-          terraform output -raw ec2_instance_id
+          terraform output -raw instance_id
           terraform output -raw elastic_ip
           terraform output -raw application_url
