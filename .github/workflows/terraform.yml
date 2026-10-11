@@ -91,7 +91,6 @@ jobs:
           terraform output -raw instance_id
           terraform output -raw elastic_ip
           terraform output -raw security_group_id
-          env:
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          
