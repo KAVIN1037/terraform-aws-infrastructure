@@ -87,6 +87,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Infrastructure Validation
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           echo "Validating Terraform outputs..."
 
@@ -102,7 +105,4 @@ jobs:
           echo "Elastic IP: $ELASTIC_IP"
           echo "Security Group ID: $SECURITY_GROUP_ID"
 
-          echo "Infrastructure validation passed."
-          env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo "Infrastructure validation passed." 
