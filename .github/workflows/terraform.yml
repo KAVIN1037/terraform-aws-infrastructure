@@ -88,9 +88,18 @@ jobs:
 
       - name: Infrastructure Validation
         run: |
-          terraform output -raw instance_id
-          terraform output -raw elastic_ip
-          terraform output -raw security_group_id
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo "Validating Terraform outputs..."
+
+          INSTANCE_ID=$(terraform output -raw instance_id)
+          ELASTIC_IP=$(terraform output -raw elastic_ip)
+          SECURITY_GROUP_ID=$(terraform output -raw security_group_id)
+
+          test -n "$INSTANCE_ID"
+          test -n "$ELASTIC_IP"
+          test -n "$SECURITY_GROUP_ID"
+
+          echo "Instance ID: $INSTANCE_ID"
+          echo "Elastic IP: $ELASTIC_IP"
+          echo "Security Group ID: $SECURITY_GROUP_ID"
+
+          echo "Infrastructure validation passed."
