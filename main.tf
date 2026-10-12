@@ -66,3 +66,15 @@ resource "aws_eip_association" "web" {
   instance_id   = aws_instance.web.id
   allocation_id = aws_eip.web.id
 }
+resource "aws_s3_bucket" "project" {
+  bucket = "${var.environment}-${data.aws_caller_identity.current.account_id}-project-bucket"
+
+  tags = {
+    Name        = "${var.environment}-project-bucket"
+    Environment = var.environment
+  }
+}
+
+data "aws_caller_identity" "current" {}
+
+
