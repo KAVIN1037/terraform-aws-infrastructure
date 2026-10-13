@@ -16,3 +16,8 @@ output "vpc_id" {
   description  = "VPC ID"
   value     = aws_vpc.main.id
 }
+
+output "application_url" {
+  description = "Application URL"
+  value       = "http://${aws_eip.web.public_ip}"
+}
