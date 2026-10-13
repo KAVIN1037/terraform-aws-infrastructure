@@ -12,3 +12,7 @@ output "security_group_id" {
   description = "Compute Security Group ID"
   value       = aws_security_group.compute.id
 }
+output "vpc_id" {
+  description = "VPC ID"
+  value       = aws_vpc.main.id
+}
