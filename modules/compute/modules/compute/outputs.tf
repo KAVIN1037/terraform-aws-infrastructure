@@ -1,6 +1,6 @@
 output "instance_id" {
   description = "EC2 Instance ID"
-  value       = aws_instance.web.id
+   value      = aws_instance.web.id
 }
 
 output "elastic_ip" {
@@ -14,5 +14,5 @@ output "security_group_id" {
 }
 output "s3_bucket_name" {
   description = "Project S3 Bucket Name"
-  value       = aws_s3_bucket.project.bucket
+   value     = aws_s3_bucket.project.bucket
 }
