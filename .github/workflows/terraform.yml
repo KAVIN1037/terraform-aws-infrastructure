@@ -1,8 +1,10 @@
 
 name: Terraform AWS Infrastructure CI/CD
-
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
   workflow_dispatch:
@@ -14,7 +16,6 @@ jobs:
   terraform-plan:
     name: Format, Init, Validate and Plan
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,8 +60,10 @@ jobs:
   terraform-apply:
     name: Approval and Apply
     needs: terraform-plan
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: terraform-approval
+
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -114,4 +117,4 @@ jobs:
           echo "Elastic IP: $ELASTIC_IP"
           echo "Security Group ID: $SECURITY_GROUP_ID"
 
-          echo "Infrastructure validation passed." 
+          echo "Infrastructure validation passed."

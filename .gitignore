@@ -5,3 +5,11 @@ crash.log
 crash.*.log
 *.tfvars
 !example.tfvars
+# Terraform local files
+*.tfplan
+tfplan
+*.backup
+*.bak
+
+# Terraform state backups
+terraform-state-backup.json
