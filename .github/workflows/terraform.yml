@@ -22,7 +22,8 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-
+        with:
+          terraform_version: 1.16.5
       - name: Terraform Format
         run: terraform fmt -check -recursive
 
@@ -73,6 +74,8 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.16.5
 
       - name: Terraform Init
         run: terraform init -input=false
