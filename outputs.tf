@@ -22,3 +22,8 @@ output "application_url" {
   description = "Application URL"
   value       = "http://${aws_eip.web.public_ip}"
 }
+
+output "s3_bucket_name" {
+  description = "Project S3 Bucket Name"
+  value       = aws_s3_bucket.project.bucket
+}
