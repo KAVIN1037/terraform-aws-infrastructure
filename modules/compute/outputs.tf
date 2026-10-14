@@ -10,5 +10,5 @@ output "elastic_ip" {
 
 output "security_group_id" {
   description = "Compute Security Group ID"
-  value       = aws_security_group.compute.id
+  value       = var.web_security_group_id
 }

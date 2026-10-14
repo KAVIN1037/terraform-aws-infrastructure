@@ -13,3 +13,5 @@ tfplan
 
 # Terraform state backups
 terraform-state-backup.json
+plan.json
+state-backup.json

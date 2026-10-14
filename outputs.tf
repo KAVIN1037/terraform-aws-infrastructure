@@ -1,11 +1,12 @@
+
 output "instance_id" {
   description = "EC2 Instance ID"
-  value       = aws_instance.web.id
+  value       = module.compute.instance_id
 }
 
 output "elastic_ip" {
   description = "Elastic IP"
-  value       = aws_eip.web.public_ip
+  value       = module.compute.elastic_ip
 }
 
 output "security_group_id" {
@@ -20,7 +21,7 @@ output "vpc_id" {
 
 output "application_url" {
   description = "Application URL"
-  value       = "http://${aws_eip.web.public_ip}"
+  value       = "http://${module.compute.elastic_ip}"
 }
 
 output "s3_bucket_name" {

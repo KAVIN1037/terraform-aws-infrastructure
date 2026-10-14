@@ -1,3 +1,4 @@
+
 resource "aws_security_group" "compute" {
   name        = "${var.environment}-compute-sg"
   description = "Security group for EC2"
@@ -31,41 +32,18 @@ resource "aws_security_group" "compute" {
   }
 }
 
-resource "aws_instance" "web" {
-  ami                         = var.ami_id
-  instance_type               = var.instance_type
-  subnet_id                   = var.subnet_id
-  iam_instance_profile        = data.aws_iam_instance_profile.ec2_profile.name
-  vpc_security_group_ids      = [aws_security_group.compute.id]
-  associate_public_ip_address = true
+module "compute" {
+  source = "./modules/compute"
 
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              amazon-linux-extras install nginx1 -y
-              systemctl enable nginx
-              systemctl start nginx
-              echo "<h1>Terraform AWS Infrastructure</h1><p>Application is running successfully.</p>" > /var/www/html/index.html
-              EOF
-
-  tags = {
-    Name        = "${var.environment}-web-server"
-    Environment = var.environment
-  }
+  environment           = var.environment
+  vpc_id                = var.vpc_id
+  subnet_id             = var.subnet_id
+  instance_type         = var.instance_type
+  ami_id                = var.ami_id
+  web_security_group_id = aws_security_group.compute.id
+  iam_instance_profile  = data.aws_iam_instance_profile.ec2_profile.name
 }
 
-resource "aws_eip" "web" {
-  domain = "vpc"
-
-  tags = {
-    Name = "${var.environment}-elastic-ip"
-  }
-}
-
-resource "aws_eip_association" "web" {
-  instance_id   = aws_instance.web.id
-  allocation_id = aws_eip.web.id
-}
 resource "aws_s3_bucket" "project" {
   bucket = "${var.environment}-${data.aws_caller_identity.current.account_id}-project-bucket"
 
@@ -104,8 +82,3 @@ resource "aws_iam_role_policy_attachment" "ssm" {
 data "aws_iam_instance_profile" "ec2_profile" {
   name = "${var.environment}-ec2-instance-profile"
 }
-
-
-
-
-
