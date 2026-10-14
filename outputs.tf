@@ -12,12 +12,18 @@ output "security_group_id" {
   description = "Compute Security Group ID"
   value       = aws_security_group.compute.id
 }
+
 output "vpc_id" {
-  description  = "VPC ID"
-  value     = aws_vpc.main.id
+  description = "VPC ID"
+  value       = var.vpc_id
 }
 
 output "application_url" {
   description = "Application URL"
   value       = "http://${aws_eip.web.public_ip}"
+}
+
+output "s3_bucket_name" {
+  description = "Project S3 Bucket Name"
+  value       = aws_s3_bucket.project.bucket
 }
