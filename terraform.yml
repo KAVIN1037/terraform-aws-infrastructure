@@ -62,7 +62,7 @@ jobs:
     name: Approval and Apply
     needs: terraform-plan
     runs-on: ubuntu-latest
-    environment: production
+    environment: terraform-approval
 
     steps:
       - name: Checkout
